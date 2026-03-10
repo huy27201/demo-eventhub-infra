@@ -129,15 +129,3 @@ resource "azurerm_container_app" "demo-eventhub-receiver" {
     ]
   }
 }
-
-# Assign Role to demo-eventhub-receiver to allow it to read messages from Event Hub
-resource "azurerm_role_assignment" "demo-eventhub-receiver_eventhub_role" {
-  scope                = azurerm_eventhub_namespace.ehns.id
-  role_definition_name = "Azure Event Hubs Data Owner"
-  principal_id         = azurerm_container_app.demo-eventhub-receiver.identity[0].principal_id
-}
-
-import {
-    to = azurerm_role_assignment.demo-eventhub-receiver_eventhub_role
-    id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${azurerm_resource_group.rg.name}/providers/Microsoft.EventHub/namespaces/${azurerm_eventhub_namespace.ehns.name}/eventhubs/${azurerm_eventhub.eh.name}/Microsoft.Authorization/roleAssignments/${uuid()}"
-}
