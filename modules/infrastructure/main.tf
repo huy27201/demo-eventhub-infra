@@ -38,6 +38,11 @@ resource "azurerm_storage_account" "checkpoint" {
   }
 }
 
+resource "azurerm_storage_container" "checkpoint_container" {
+  name                  = var.checkpoint_container_name
+  storage_account_id    = azurerm_storage_account.checkpoint.id
+}
+
 resource "azurerm_cosmosdb_account" "data_store" {
   name                = var.cosmosdb_account_name
   resource_group_name = azurerm_resource_group.rg.name

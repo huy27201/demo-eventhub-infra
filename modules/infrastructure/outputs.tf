@@ -18,6 +18,11 @@ output "storage_account_id" {
   value       = azurerm_storage_account.checkpoint.id
 }
 
+output "checkpoint_container_name" {
+  description = "Name of the blob container used for Event Hub checkpointing"
+  value       = azurerm_storage_container.checkpoint_container.name
+}
+
 output "cosmosdb_account_id" {
   description = "ID of the Cosmos DB account"
   value       = azurerm_cosmosdb_account.data_store.id

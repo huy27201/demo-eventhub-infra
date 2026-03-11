@@ -7,6 +7,7 @@ module "infrastructure" {
   eventhub_namespace_name        = var.eventhub_namespace_name
   eventhub_name                  = var.eventhub_name
   storage_account_name           = var.storage_account_name
+  checkpoint_container_name      = var.checkpoint_container_name
   cosmosdb_account_name          = var.cosmosdb_account_name
   container_registry_name        = var.container_registry_name
   container_app_environment_name = var.container_app_environment_name

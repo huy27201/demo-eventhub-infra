@@ -18,6 +18,11 @@ output "storage_account_id" {
   value       = module.infrastructure.storage_account_id
 }
 
+output "checkpoint_container_name" {
+  description = "Name of the blob container used for Event Hub checkpointing"
+  value       = module.infrastructure.checkpoint_container_name
+}
+
 output "cosmosdb_account_id" {
   description = "ID of the Cosmos DB account"
   value       = module.infrastructure.cosmosdb_account_id

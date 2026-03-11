@@ -28,6 +28,11 @@ variable "storage_account_name" {
   description = "Name of the storage account"
 }
 
+variable "checkpoint_container_name" {
+  type        = string
+  description = "Name of the blob container used for Event Hub checkpointing"
+}
+
 variable "cosmosdb_account_name" {
   type        = string
   description = "Name of the Cosmos DB account"
