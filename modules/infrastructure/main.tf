@@ -202,6 +202,39 @@ resource "azurerm_container_app" "receiver" {
       image  = var.container_image
       cpu    = 0.25
       memory = "0.5Gi"
+
+      env {
+        name  = "AZURE_CLIENT_ID"
+        value = azurerm_user_assigned_identity.receiver_identity.client_id
+      }
+      env {
+        name  = "SPRING_CLOUD_AZURE_CREDENTIAL_MANAGED_IDENTITY_ENABLED"
+        value = "true"
+      }
+      env {
+        name  = "SPRING_CLOUD_AZURE_EVENTHUBS_NAMESPACE"
+        value = var.eventhub_namespace_name
+      }
+      env {
+        name  = "SPRING_CLOUD_AZURE_EVENTHUBS_EVENT_HUB_NAME"
+        value = var.eventhub_name
+      }
+      env {
+        name  = "SPRING_CLOUD_AZURE_EVENTHUBS_PROCESSOR_CHECKPOINT_STORE_ACCOUNT_NAME"
+        value = var.storage_account_name
+      }
+      env {
+        name  = "SPRING_CLOUD_AZURE_EVENTHUBS_PROCESSOR_CHECKPOINT_STORE_CONTAINER_NAME"
+        value = var.checkpoint_container_name
+      }
+      env {
+        name  = "SPRING_CLOUD_AZURE_COSMOS_ENDPOINT"
+        value = azurerm_cosmosdb_account.data_store.endpoint
+      }
+      env {
+        name  = "SPRING_CLOUD_AZURE_COSMOS_DATABASE"
+        value = var.cosmosdb_database_name
+      }
     }
   }
 
