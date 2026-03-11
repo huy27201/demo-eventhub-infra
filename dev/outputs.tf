@@ -33,6 +33,16 @@ output "cosmosdb_endpoint" {
   value       = module.infrastructure.cosmosdb_endpoint
 }
 
+output "cosmosdb_database_name" {
+  description = "Name of the Cosmos DB SQL database"
+  value       = module.infrastructure.cosmosdb_database_name
+}
+
+output "cosmosdb_container_name" {
+  description = "Name of the Cosmos DB SQL container"
+  value       = module.infrastructure.cosmosdb_container_name
+}
+
 output "container_registry_login_server" {
   description = "Login server URL of the Container Registry"
   value       = module.infrastructure.container_registry_login_server

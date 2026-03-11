@@ -38,6 +38,16 @@ variable "cosmosdb_account_name" {
   description = "Name of the Cosmos DB account"
 }
 
+variable "cosmosdb_database_name" {
+  type        = string
+  description = "Name of the Cosmos DB SQL database"
+}
+
+variable "cosmosdb_container_name" {
+  type        = string
+  description = "Name of the Cosmos DB SQL container"
+}
+
 variable "container_registry_name" {
   type        = string
   description = "Name of the Azure Container Registry"

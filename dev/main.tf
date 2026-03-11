@@ -9,6 +9,8 @@ module "infrastructure" {
   storage_account_name           = var.storage_account_name
   checkpoint_container_name      = var.checkpoint_container_name
   cosmosdb_account_name          = var.cosmosdb_account_name
+  cosmosdb_database_name         = var.cosmosdb_database_name
+  cosmosdb_container_name        = var.cosmosdb_container_name
   container_registry_name        = var.container_registry_name
   container_app_environment_name = var.container_app_environment_name
   user_assigned_identity_name    = var.user_assigned_identity_name

@@ -69,6 +69,20 @@ resource "azurerm_cosmosdb_account" "data_store" {
   }
 }
 
+resource "azurerm_cosmosdb_sql_database" "app_db" {
+  name                = var.cosmosdb_database_name
+  resource_group_name = azurerm_resource_group.rg.name
+  account_name        = azurerm_cosmosdb_account.data_store.name
+}
+
+resource "azurerm_cosmosdb_sql_container" "messages" {
+  name                = var.cosmosdb_container_name
+  resource_group_name = azurerm_resource_group.rg.name
+  account_name        = azurerm_cosmosdb_account.data_store.name
+  database_name       = azurerm_cosmosdb_sql_database.app_db.name
+  partition_key_paths = ["/id"]
+}
+
 resource "azurerm_container_registry" "registry" {
   name                = var.container_registry_name
   resource_group_name = azurerm_resource_group.rg.name

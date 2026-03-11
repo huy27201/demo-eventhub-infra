@@ -33,6 +33,16 @@ output "cosmosdb_endpoint" {
   value       = azurerm_cosmosdb_account.data_store.endpoint
 }
 
+output "cosmosdb_database_name" {
+  description = "Name of the Cosmos DB SQL database"
+  value       = azurerm_cosmosdb_sql_database.app_db.name
+}
+
+output "cosmosdb_container_name" {
+  description = "Name of the Cosmos DB SQL container"
+  value       = azurerm_cosmosdb_sql_container.messages.name
+}
+
 output "container_registry_login_server" {
   description = "Login server URL of the Container Registry"
   value       = azurerm_container_registry.registry.login_server
