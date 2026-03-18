@@ -13,24 +13,14 @@ variable "location" {
   description = "Azure region for all resources"
 }
 
-variable "eventhub_namespace_name" {
+variable "servicebus_namespace_name" {
   type        = string
-  description = "Name of the Event Hubs namespace"
+  description = "Name of the Service Bus namespace"
 }
 
-variable "eventhub_name" {
+variable "servicebus_queue_name" {
   type        = string
-  description = "Name of the Event Hub"
-}
-
-variable "storage_account_name" {
-  type        = string
-  description = "Name of the storage account"
-}
-
-variable "checkpoint_container_name" {
-  type        = string
-  description = "Name of the blob container used for Event Hub checkpointing"
+  description = "Name of the Service Bus queue"
 }
 
 variable "cosmosdb_account_name" {

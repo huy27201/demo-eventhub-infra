@@ -3,24 +3,14 @@ output "resource_group_name" {
   value       = azurerm_resource_group.rg.name
 }
 
-output "eventhub_namespace_id" {
-  description = "ID of the Event Hubs namespace"
-  value       = azurerm_eventhub_namespace.receiver_namespace.id
+output "servicebus_namespace_id" {
+  description = "ID of the Service Bus namespace"
+  value       = azurerm_servicebus_namespace.receiver_namespace.id
 }
 
-output "eventhub_id" {
-  description = "ID of the Event Hub"
-  value       = azurerm_eventhub.messages.id
-}
-
-output "storage_account_id" {
-  description = "ID of the storage account"
-  value       = azurerm_storage_account.checkpoint.id
-}
-
-output "checkpoint_container_name" {
-  description = "Name of the blob container used for Event Hub checkpointing"
-  value       = azurerm_storage_container.checkpoint_container.name
+output "servicebus_queue_id" {
+  description = "ID of the Service Bus queue"
+  value       = azurerm_servicebus_queue.receiver_queue.id
 }
 
 output "cosmosdb_account_id" {

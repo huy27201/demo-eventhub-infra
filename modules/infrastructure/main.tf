@@ -7,8 +7,8 @@ resource "azurerm_resource_group" "rg" {
   }
 }
 
-resource "azurerm_eventhub_namespace" "receiver_namespace" {
-  name                = var.eventhub_namespace_name
+resource "azurerm_servicebus_namespace" "receiver_namespace" {
+  name                = var.servicebus_namespace_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   sku                 = "Basic"
@@ -18,29 +18,9 @@ resource "azurerm_eventhub_namespace" "receiver_namespace" {
   }
 }
 
-resource "azurerm_eventhub" "messages" {
-  name              = var.eventhub_name
-  namespace_id      = azurerm_eventhub_namespace.receiver_namespace.id
-  partition_count   = 2
-  message_retention = 1
-}
-
-resource "azurerm_storage_account" "checkpoint" {
-  name                            = var.storage_account_name
-  resource_group_name             = azurerm_resource_group.rg.name
-  location                        = azurerm_resource_group.rg.location
-  account_tier                    = "Standard"
-  account_replication_type        = "LRS"
-  allow_nested_items_to_be_public = false
-
-  tags = {
-    environment = var.environment
-  }
-}
-
-resource "azurerm_storage_container" "checkpoint_container" {
-  name                  = var.checkpoint_container_name
-  storage_account_id    = azurerm_storage_account.checkpoint.id
+resource "azurerm_servicebus_queue" "receiver_queue" {
+  name              = var.servicebus_queue_name
+  namespace_id      = azurerm_servicebus_namespace.receiver_namespace.id
 }
 
 resource "azurerm_cosmosdb_account" "data_store" {
@@ -122,15 +102,9 @@ resource "azurerm_federated_identity_credential" "github_actions" {
   subject   = "repo:${var.github_repo}:environment:${var.github_environment}"
 }
 
-resource "azurerm_role_assignment" "receiver_evh_access" {
-  scope                = azurerm_eventhub.messages.id
-  role_definition_name = "Azure Event Hubs Data Owner"
-  principal_id         = azurerm_user_assigned_identity.receiver_identity.principal_id
-}
-
-resource "azurerm_role_assignment" "receiver_checkpoint_access" {
-  scope                = azurerm_storage_account.checkpoint.id
-  role_definition_name = "Storage Blob Data Contributor"
+resource "azurerm_role_assignment" "receiver_servicebus_access" {
+  scope                = azurerm_servicebus_namespace.receiver_namespace.id
+  role_definition_name = "Azure Service Bus Data Receiver"
   principal_id         = azurerm_user_assigned_identity.receiver_identity.principal_id
 }
 
@@ -212,20 +186,12 @@ resource "azurerm_container_app" "receiver" {
         value = "true"
       }
       env {
-        name  = "SPRING_CLOUD_AZURE_EVENTHUBS_NAMESPACE"
-        value = var.eventhub_namespace_name
+        name  = "SPRING_CLOUD_AZURE_SERVICEBUS_NAMESPACE"
+        value = var.servicebus_namespace_name
       }
       env {
-        name  = "SPRING_CLOUD_AZURE_EVENTHUBS_EVENT_HUB_NAME"
-        value = var.eventhub_name
-      }
-      env {
-        name  = "SPRING_CLOUD_AZURE_EVENTHUBS_PROCESSOR_CHECKPOINT_STORE_ACCOUNT_NAME"
-        value = var.storage_account_name
-      }
-      env {
-        name  = "SPRING_CLOUD_AZURE_EVENTHUBS_PROCESSOR_CHECKPOINT_STORE_CONTAINER_NAME"
-        value = var.checkpoint_container_name
+        name  = "SPRING_CLOUD_AZURE_SERVICEBUS_ENTITY_NAME"
+        value = var.servicebus_queue_name
       }
       env {
         name  = "SPRING_CLOUD_AZURE_COSMOS_ENDPOINT"
