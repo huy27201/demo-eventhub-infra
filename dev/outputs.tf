@@ -3,24 +3,14 @@ output "resource_group_name" {
   value       = module.infrastructure.resource_group_name
 }
 
-output "eventhub_namespace_id" {
-  description = "ID of the Event Hubs namespace"
-  value       = module.infrastructure.eventhub_namespace_id
+output "servicebus_namespace_id" {
+  description = "ID of the Service Bus namespace"
+  value       = module.infrastructure.servicebus_namespace_id
 }
 
-output "eventhub_id" {
-  description = "ID of the Event Hub"
-  value       = module.infrastructure.eventhub_id
-}
-
-output "storage_account_id" {
-  description = "ID of the storage account"
-  value       = module.infrastructure.storage_account_id
-}
-
-output "checkpoint_container_name" {
-  description = "Name of the blob container used for Event Hub checkpointing"
-  value       = module.infrastructure.checkpoint_container_name
+output "servicebus_queue_id" {
+  description = "ID of the Service Bus queue"
+  value       = module.infrastructure.servicebus_queue_id
 }
 
 output "cosmosdb_account_id" {

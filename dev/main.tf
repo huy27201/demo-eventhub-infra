@@ -4,10 +4,8 @@ module "infrastructure" {
   environment                    = var.environment
   resource_group_name            = var.resource_group_name
   location                       = var.location
-  eventhub_namespace_name        = var.eventhub_namespace_name
-  eventhub_name                  = var.eventhub_name
-  storage_account_name           = var.storage_account_name
-  checkpoint_container_name      = var.checkpoint_container_name
+  servicebus_namespace_name      = var.servicebus_namespace_name
+  servicebus_queue_name          = var.servicebus_queue_name
   cosmosdb_account_name          = var.cosmosdb_account_name
   cosmosdb_database_name         = var.cosmosdb_database_name
   cosmosdb_container_name        = var.cosmosdb_container_name
