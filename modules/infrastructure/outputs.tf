@@ -5,12 +5,27 @@ output "resource_group_name" {
 
 output "servicebus_namespace_id" {
   description = "ID of the Service Bus namespace"
-  value       = azurerm_servicebus_namespace.receiver_namespace.id
+  value       = azurerm_servicebus_namespace.servicebus_namespace.id
 }
 
 output "servicebus_queue_id" {
   description = "ID of the Service Bus queue"
-  value       = azurerm_servicebus_queue.receiver_queue.id
+  value       = azurerm_servicebus_queue.servicebus_queue.id
+}
+
+output "eventhub_namespace_id" {
+  description = "ID of the Event Hubs namespace"
+  value       = azurerm_eventhub_namespace.eventhub_namespace.id
+}
+
+output "eventhub_hub_id" {
+  description = "ID of the Event Hub"
+  value       = azurerm_eventhub.eventhub_hub.id
+}
+
+output "storage_account_id" {
+  description = "ID of the Storage Account used for Event Hubs checkpointing"
+  value       = azurerm_storage_account.checkpoint_store.id
 }
 
 output "cosmosdb_account_id" {
@@ -28,9 +43,14 @@ output "cosmosdb_database_name" {
   value       = azurerm_cosmosdb_sql_database.app_db.name
 }
 
-output "cosmosdb_container_name" {
-  description = "Name of the Cosmos DB SQL container"
-  value       = azurerm_cosmosdb_sql_container.messages.name
+output "cosmosdb_servicebus_container_name" {
+  description = "Name of the Cosmos DB SQL container for Service Bus messages"
+  value       = azurerm_cosmosdb_sql_container.servicebus_messages.name
+}
+
+output "cosmosdb_eventhub_container_name" {
+  description = "Name of the Cosmos DB SQL container for Event Hub messages"
+  value       = azurerm_cosmosdb_sql_container.eventhub_messages.name
 }
 
 output "container_registry_login_server" {
