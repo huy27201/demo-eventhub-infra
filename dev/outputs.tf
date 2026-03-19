@@ -13,6 +13,21 @@ output "servicebus_queue_id" {
   value       = module.infrastructure.servicebus_queue_id
 }
 
+output "eventhub_namespace_id" {
+  description = "ID of the Event Hubs namespace"
+  value       = module.infrastructure.eventhub_namespace_id
+}
+
+output "eventhub_hub_id" {
+  description = "ID of the Event Hub"
+  value       = module.infrastructure.eventhub_hub_id
+}
+
+output "storage_account_id" {
+  description = "ID of the Storage Account used for Event Hubs checkpointing"
+  value       = module.infrastructure.storage_account_id
+}
+
 output "cosmosdb_account_id" {
   description = "ID of the Cosmos DB account"
   value       = module.infrastructure.cosmosdb_account_id
@@ -28,9 +43,14 @@ output "cosmosdb_database_name" {
   value       = module.infrastructure.cosmosdb_database_name
 }
 
-output "cosmosdb_container_name" {
-  description = "Name of the Cosmos DB SQL container"
-  value       = module.infrastructure.cosmosdb_container_name
+output "cosmosdb_servicebus_container_name" {
+  description = "Name of the Cosmos DB SQL container for Service Bus messages"
+  value       = module.infrastructure.cosmosdb_servicebus_container_name
+}
+
+output "cosmosdb_eventhub_container_name" {
+  description = "Name of the Cosmos DB SQL container for Event Hub messages"
+  value       = module.infrastructure.cosmosdb_eventhub_container_name
 }
 
 output "container_registry_login_server" {

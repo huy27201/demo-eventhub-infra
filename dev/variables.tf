@@ -33,9 +33,9 @@ variable "cosmosdb_database_name" {
   description = "Name of the Cosmos DB SQL database"
 }
 
-variable "cosmosdb_container_name" {
+variable "cosmosdb_servicebus_container_name" {
   type        = string
-  description = "Name of the Cosmos DB SQL container"
+  description = "Name of the Cosmos DB SQL container for Service Bus messages"
 }
 
 variable "container_registry_name" {
@@ -76,4 +76,34 @@ variable "github_repo" {
 variable "github_environment" {
   type        = string
   description = "GitHub Actions environment name used for OIDC federation (e.g. dev, prod)"
+}
+
+variable "eventhub_namespace_name" {
+  type        = string
+  description = "Name of the Event Hubs namespace"
+}
+
+variable "eventhub_hub_name" {
+  type        = string
+  description = "Name of the Event Hub"
+}
+
+variable "eventhub_consumer_group_name" {
+  type        = string
+  description = "Name of the Event Hub consumer group"
+}
+
+variable "storage_account_name" {
+  type        = string
+  description = "Name of the Storage Account used for Event Hubs checkpointing"
+}
+
+variable "storage_container_name" {
+  type        = string
+  description = "Name of the Blob Storage container used for Event Hubs checkpoints"
+}
+
+variable "cosmosdb_eventhub_container_name" {
+  type        = string
+  description = "Name of the Cosmos DB SQL container for Event Hub messages"
 }
