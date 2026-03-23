@@ -23,11 +23,19 @@ resource "azurerm_servicebus_queue" "servicebus_queue" {
   namespace_id      = azurerm_servicebus_namespace.servicebus_namespace.id
 }
 
+resource "azurerm_servicebus_namespace_authorization_rule" "keda_scaler" {
+  name         = "keda-scaler"
+  namespace_id = azurerm_servicebus_namespace.servicebus_namespace.id
+  listen       = true
+  send         = true
+  manage       = true
+}
+
 resource "azurerm_eventhub_namespace" "eventhub_namespace" {
   name                = var.eventhub_namespace_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  sku                 = "Standard"
+  sku                 = "Basic"
 
   tags = {
     environment = var.environment
@@ -39,13 +47,6 @@ resource "azurerm_eventhub" "eventhub_hub" {
   namespace_id      = azurerm_eventhub_namespace.eventhub_namespace.id
   partition_count   = 2
   message_retention = 1
-}
-
-resource "azurerm_eventhub_consumer_group" "eventhub_consumer_group" {
-  name                = var.eventhub_consumer_group_name
-  namespace_name      = azurerm_eventhub_namespace.eventhub_namespace.name
-  eventhub_name       = azurerm_eventhub.eventhub_hub.name
-  resource_group_name = azurerm_resource_group.rg.name
 }
 
 resource "azurerm_storage_account" "checkpoint_store" {
@@ -224,14 +225,33 @@ resource "azurerm_container_app" "receiver" {
   revision_mode                = "Single"
   workload_profile_name        = "Consumption"
 
+  secret {
+    name  = "servicebus-connection"
+    value = azurerm_servicebus_namespace_authorization_rule.keda_scaler.primary_connection_string
+  }
+
   identity {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.receiver_identity.id]
   }
 
   template {
-    min_replicas = 1
-    max_replicas = 1
+    min_replicas = 0
+    max_replicas = 2
+
+    custom_scale_rule {
+      name             = "servicebus-scaler"
+      custom_rule_type = "azure-servicebus"
+      metadata = {
+        namespace    = var.servicebus_namespace_name
+        queueName    = var.servicebus_queue_name
+        messageCount = "1"
+      }
+      authentication {
+        secret_name       = "servicebus-connection"
+        trigger_parameter = "connection"
+      }
+    }
 
     container {
       name   = var.container_app_name
